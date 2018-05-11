@@ -106,8 +106,14 @@ namespace Lambda.Tests.Unit
             );
         }
 
-        [Fact]
-        public void GivenInvalidSmsApiCredentials_ThenReturnsUnauthorized()
+        [Theory]
+        [InlineData(null, "Bar")]
+        [InlineData("", "Bar")]
+        [InlineData("Foo", null)]
+        [InlineData("Foo", "")]
+        public void GivenInvalidSmsApiCredentials_ThenReturnsUnauthorized(
+            string username,
+            string password)
         {
             var lambdaContext = Given.LambdaContext
                 .Build();
@@ -115,7 +121,10 @@ namespace Lambda.Tests.Unit
             var notification = Given.Notification
                 .Build();
 
-            var sut = CreateSut(HttpStatusCode.Unauthorized);
+            var sut = CreateSut(
+                HttpStatusCode.Unauthorized,
+                username,
+                password);
 
             var result = sut.Handler(notification, lambdaContext);
 
@@ -123,7 +132,7 @@ namespace Lambda.Tests.Unit
                 (int) HttpStatusCode.Unauthorized,
                 "the client has provided invalid credentials");
         }
-
+        
         [Fact]
         public void GivenNullNotification_ThenReturnsBadRequest()
         {
@@ -159,13 +168,35 @@ namespace Lambda.Tests.Unit
 
         private Function CreateSut()
         {
-            return CreateSut(HttpStatusCode.OK);
+            return CreateSut(
+                HttpStatusCode.OK,
+                "https://joaorosa.io",
+                "Foo",
+                "Bar");
+        }
+        
+        private Function CreateSut(
+            HttpStatusCode httpStatusCode,
+            string username,
+            string password)
+        {
+            return CreateSut(
+                httpStatusCode,
+                "https://joaorosa.io",
+                username,
+                password);
         }
 
         private Function CreateSut(
-            HttpStatusCode httpStatusCode)
+            HttpStatusCode httpStatusCode,
+            string url,
+            string username,
+            string password)
         {
-            SetEnvironmentVariables();
+            SetEnvironmentVariables(
+                url,
+                username,
+                password);
 
             var httpMessageHandlerDouble = Given.HttpMesageHandler
                 .WithHttpStatusCode(httpStatusCode)
@@ -177,11 +208,22 @@ namespace Lambda.Tests.Unit
             return function;
         }
 
-        private void SetEnvironmentVariables()
+        private void SetEnvironmentVariables(
+            string url,
+            string username,
+            string password)
         {
             Environment.SetEnvironmentVariable(
                 "SMS_API_URL",
-                "https://joaorosa.io"
+                url
+            );
+            Environment.SetEnvironmentVariable(
+                "SMS_API_USERNAME",
+                username
+            );
+            Environment.SetEnvironmentVariable(
+                "SMS_API_PASSWORD",
+                password
             );
         }
     }
