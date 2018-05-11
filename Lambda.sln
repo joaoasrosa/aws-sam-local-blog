@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{14F473CC-C62C-4822-AB27-D67957722F8A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A521D9C6-0B74-40F3-A747-001FD0DB9A05}"
+ProjectSection(SolutionItems) = preProject
+	build.ps1 = build.ps1
+	build.sh = build.sh
+	build.cake = build.cake
+EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DFE8FC46-16C3-43EE-8618-F2B33D4A4E09}"
 EndProject
