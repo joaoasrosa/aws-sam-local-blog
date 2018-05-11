@@ -115,7 +115,7 @@ namespace Lambda.Tests.Unit
             var notification = Given.Notification
                 .Build();
 
-            var sut = CreateSut();
+            var sut = CreateSut(HttpStatusCode.Unauthorized);
 
             var result = sut.Handler(notification, lambdaContext);
 
@@ -159,10 +159,16 @@ namespace Lambda.Tests.Unit
 
         private Function CreateSut()
         {
+            return CreateSut(HttpStatusCode.OK);
+        }
+
+        private Function CreateSut(
+            HttpStatusCode httpStatusCode)
+        {
             SetEnvironmentVariables();
 
             var httpMessageHandlerDouble = Given.HttpMesageHandler
-                .WithHttpStatusCode(HttpStatusCode.Unauthorized)
+                .WithHttpStatusCode(httpStatusCode)
                 .Build();
 
             var function = new Function();
