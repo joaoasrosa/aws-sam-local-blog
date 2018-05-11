@@ -249,6 +249,14 @@ Task("Run")
     .IsDependentOn("Pack")
     .IsDependentOn("Run-Local")
     .Does(() => { Information("Run target ran."); });
+
+Task("AppVeyor")
+    .Description("This is the task which will run if target AppVeyor is passed in.")
+    .IsDependentOn("Clean")
+    .IsDependentOn("Restore")
+    .IsDependentOn("Build")
+    .IsDependentOn("Test-Unit")
+    .Does(() => { Information("AppVeyor target ran."); });
     
 Task("Default")
     .Description("This is the default task which will run if no specific target is passed in.")
