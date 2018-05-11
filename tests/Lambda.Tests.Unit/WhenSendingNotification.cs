@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using FluentAssertions;
 
 namespace Lambda.Tests.Unit
 {
@@ -10,7 +11,7 @@ namespace Lambda.Tests.Unit
             
             var sut = CreateSut();
 
-            var result = sut.Handler(null, null);
+            var result = sut.Handler(null, lambdaContext);
 
             result.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
         }

@@ -1,4 +1,6 @@
-﻿using Amazon.Lambda.Core;
+﻿using System.Net;
+using Amazon.Lambda.APIGatewayEvents;
+using Amazon.Lambda.Core;
 using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -8,8 +10,12 @@ namespace Lambda
 {
     public class Function
     {
-        public void Handler(Notification notification, ILambdaContext context)
+        public APIGatewayProxyResponse Handler(Notification notification, ILambdaContext context)
         {
+            return new APIGatewayProxyResponse
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
 }
