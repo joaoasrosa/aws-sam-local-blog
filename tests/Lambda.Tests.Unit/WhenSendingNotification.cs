@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using FluentAssertions;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Lambda.Tests.Unit
@@ -46,9 +47,14 @@ namespace Lambda.Tests.Unit
 
             var result = sut.Handler(notification, lambdaContext);
 
-            result.Body.Should().Be(
+            var errorResult = JsonConvert.DeserializeObject<ErrorResult>(
+                result.Body
+            );
+
+            errorResult.Reason.Should().Be(
                 "Invalid Phone Number.",
-                "the phone number is invalid");
+                "the phone number is invalid"
+            );
         }
 
         [Theory]
@@ -89,10 +95,15 @@ namespace Lambda.Tests.Unit
             var sut = CreateSut();
 
             var result = sut.Handler(notification, lambdaContext);
+          
+            var errorResult = JsonConvert.DeserializeObject<ErrorResult>(
+                result.Body
+            );
 
-            result.Body.Should().Be(
+            errorResult.Reason.Should().Be(
                 "Invalid Display Name.",
-                "the display name is invalid");
+                "the display name is invalid"
+            );
         }
 
         [Fact]
@@ -136,9 +147,14 @@ namespace Lambda.Tests.Unit
 
             var result = sut.Handler(null, lambdaContext);
 
-            result.Body.Should().Be(
+            var errorResult = JsonConvert.DeserializeObject<ErrorResult>(
+                result.Body
+            );
+
+            errorResult.Reason.Should().Be(
                 "The Notification is null.",
-                "the notification is null");
+                "the notification is null"
+            );
         }
 
         private Function CreateSut()
