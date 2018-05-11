@@ -257,6 +257,14 @@ Task("AppVeyor")
     .IsDependentOn("Build")
     .IsDependentOn("Test-Unit")
     .Does(() => { Information("AppVeyor target ran."); });
+
+Task("TravisCI")
+    .Description("This is the task which will run if target TravisCI is passed in.")
+    .IsDependentOn("Clean")
+    .IsDependentOn("Restore")
+    .IsDependentOn("Build")
+    .IsDependentOn("Test-Unit")
+    .Does(() => { Information("TravisCI target ran."); });
     
 Task("Default")
     .Description("This is the default task which will run if no specific target is passed in.")
