@@ -17,7 +17,8 @@ namespace Lambda
             if (notification == null)
                 return new APIGatewayProxyResponse
                 {
-                    StatusCode = (int) HttpStatusCode.BadRequest
+                    StatusCode = (int) HttpStatusCode.BadRequest,
+                    Body = "The Notification is null."
                 };
 
             var validationFailureReason = notification.Validate(out var isValid);
