@@ -23,11 +23,17 @@ namespace Lambda
                 var validationFailureReason = notification.Validate(out var isValid);
 
                 if (isValid == false)
+                {
+                    var errorResult = new ErrorResult(
+                        validationFailureReason);
+                    
                     return new APIGatewayProxyResponse
                     {
                         StatusCode = (int) HttpStatusCode.BadRequest,
-                        Body = validationFailureReason
+                        Body = CreateResponseBodyFromErrorResult(
+                            errorResult)
                     };
+                }
 
                 var smsClient = CreateSmsClient();
 
@@ -79,6 +85,12 @@ namespace Lambda
                 Environment.GetEnvironmentVariable("SMS_API_USERNAME"),
                 Environment.GetEnvironmentVariable("SMS_API_PASSWORD")
             );
+        }
+
+        private string CreateResponseBodyFromErrorResult(
+            ErrorResult errorResult)
+        {
+            return JsonConvert.SerializeObject(errorResult);
         }
     }
 }
