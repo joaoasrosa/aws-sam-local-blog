@@ -52,6 +52,9 @@ namespace Lambda
                     case InvalidCredentials _:
                         statusCode = HttpStatusCode.Unauthorized;
                         break;
+                    case InsufficientCredits _:
+                        statusCode = HttpStatusCode.Forbidden;
+                        break;
                 }
 
                 return new APIGatewayProxyResponse

@@ -13,6 +13,9 @@ namespace Lambda
             {
                 case HttpStatusCode.Unauthorized:
                     throw new InvalidCredentials();
+                
+                case HttpStatusCode.Forbidden:
+                    throw new InsufficientCredits();
                     
                 case HttpStatusCode.Accepted:
 
@@ -29,8 +32,6 @@ namespace Lambda
                 case HttpStatusCode.Created:
 
                 case HttpStatusCode.ExpectationFailed:
-
-                case HttpStatusCode.Forbidden:
 
                 case HttpStatusCode.Found:
 
@@ -87,7 +88,6 @@ namespace Lambda
                 case HttpStatusCode.ServiceUnavailable:
 
                 case HttpStatusCode.SwitchingProtocols:
-
 
                 case HttpStatusCode.UnsupportedMediaType:
 
