@@ -15,5 +15,10 @@ namespace Lambda
 
         internal string PhoneNumber { get; }
         internal string DisplayName { get; }
+
+        internal bool IsValid()
+        {
+            return string.IsNullOrWhiteSpace(PhoneNumber) == false;
+        }
     }
 }

@@ -14,15 +14,19 @@ namespace Lambda
             Notification notification,
             ILambdaContext context)
         {
-            var statusCode = (int) HttpStatusCode.InternalServerError;
-
             if (notification == null)
-                statusCode = (int) HttpStatusCode.BadRequest;
+                return new APIGatewayProxyResponse
+                {
+                    StatusCode = (int) HttpStatusCode.BadRequest
+                };
 
-            return new APIGatewayProxyResponse
-            {
-                StatusCode = statusCode
-            };
+            if (notification.IsValid() == false)
+                return new APIGatewayProxyResponse
+                {
+                    StatusCode = (int) HttpStatusCode.BadRequest
+                };
+
+            return null;
         }
     }
 }
