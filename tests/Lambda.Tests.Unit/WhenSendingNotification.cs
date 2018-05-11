@@ -19,6 +19,20 @@ namespace Lambda.Tests.Unit
                 (int)HttpStatusCode.BadRequest,
                 "the notification is null");
         }
+        
+        [Fact]
+        public void GivenNullNotification_ThenReturnsReason()
+        {
+            var lambdaContext = Given.LambdaContext.Build();
+            
+            var sut = CreateSut();
+
+            var result = sut.Handler(null, lambdaContext);
+
+            result.Body.Should().Be(
+                "The Notification is null.",
+                "the notification is null");
+        }
 
         [Theory]
         [InlineData(null)]
