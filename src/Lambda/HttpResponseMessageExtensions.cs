@@ -11,6 +11,9 @@ namespace Lambda
         {
             switch (httpResponseMessage.StatusCode)
             {
+                case HttpStatusCode.OK:
+                    return;
+                
                 case HttpStatusCode.Unauthorized:
                     throw new InvalidCredentials();
                 
@@ -60,8 +63,6 @@ namespace Lambda
                 case HttpStatusCode.NotImplemented:
 
                 case HttpStatusCode.NotModified:
-
-                case HttpStatusCode.OK:
 
                 case HttpStatusCode.PartialContent:
 
