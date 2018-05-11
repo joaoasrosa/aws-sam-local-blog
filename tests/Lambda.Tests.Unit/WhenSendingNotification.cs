@@ -15,7 +15,9 @@ namespace Lambda.Tests.Unit
 
             var result = sut.Handler(null, lambdaContext);
 
-            result.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+            result.StatusCode.Should().Be(
+                (int)HttpStatusCode.BadRequest,
+                "the notification is null");
         }
 
         [Theory]
@@ -35,7 +37,31 @@ namespace Lambda.Tests.Unit
 
             var result = sut.Handler(notification, lambdaContext);
 
-            result.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+            result.StatusCode.Should().Be(
+                (int)HttpStatusCode.BadRequest,
+                "the phone number is invalid");
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void GivenNotificationPhoneNumberIsInvalid_ThenReturnsReason(
+            string phoneNumber)
+        {
+            var lambdaContext = Given.LambdaContext
+                .Build();
+            
+            var notification = Given.Notification
+                .WithPhoneNumber(phoneNumber)
+                .Build();
+            
+            var sut = CreateSut();
+
+            var result = sut.Handler(notification, lambdaContext);
+
+            result.Body.Should().Be(
+                "Invalid Phone Number.",
+                "the phone number is invalid");
         }
 
         [Theory]
@@ -55,7 +81,9 @@ namespace Lambda.Tests.Unit
 
             var result = sut.Handler(notification, lambdaContext);
 
-            result.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+            result.StatusCode.Should().Be(
+                (int)HttpStatusCode.BadRequest,
+                "the display name is invalid");
         }
 
         private Function CreateSut()

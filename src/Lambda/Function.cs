@@ -20,10 +20,13 @@ namespace Lambda
                     StatusCode = (int) HttpStatusCode.BadRequest
                 };
 
-            if (notification.IsValid() == false)
+            var validationFailureReason = notification.Validate(out var isValid);
+
+            if (isValid == false)
                 return new APIGatewayProxyResponse
                 {
-                    StatusCode = (int) HttpStatusCode.BadRequest
+                    StatusCode = (int) HttpStatusCode.BadRequest,
+                    Body = validationFailureReason
                 };
 
             return null;
