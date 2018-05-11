@@ -10,11 +10,18 @@ namespace Lambda
 {
     public class Function
     {
-        public APIGatewayProxyResponse Handler(Notification notification, ILambdaContext context)
+        public APIGatewayProxyResponse Handler(
+            Notification notification,
+            ILambdaContext context)
         {
+            var statusCode = (int) HttpStatusCode.InternalServerError;
+
+            if (notification == null)
+                statusCode = (int) HttpStatusCode.BadRequest;
+
             return new APIGatewayProxyResponse
             {
-                StatusCode = (int)HttpStatusCode.InternalServerError
+                StatusCode = statusCode
             };
         }
     }
