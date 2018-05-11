@@ -153,6 +153,25 @@ namespace Lambda.Tests.Unit
         }
 
         [Fact]
+        public void GivenSmsIsSent_ThenReturnsOk()
+        {
+            var lambdaContext = Given.LambdaContext
+                .Build();
+
+            var notification = Given.Notification
+                .Build();
+
+            var sut = CreateSut(
+                HttpStatusCode.OK);
+
+            var result = sut.Handler(notification, lambdaContext);
+
+            result.StatusCode.Should().Be(
+                (int) HttpStatusCode.OK,
+                "the SMS was sent");
+        }
+
+        [Fact]
         public void GivenNullNotification_ThenReturnsBadRequest()
         {
             var lambdaContext = Given.LambdaContext.Build();
