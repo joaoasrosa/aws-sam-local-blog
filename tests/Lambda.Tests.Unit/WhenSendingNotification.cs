@@ -110,7 +110,7 @@ namespace Lambda.Tests.Unit
                 .Build();
             
             var notification = Given.Notification
-                .WithPhoneNumber(displayName)
+                .WithDisplayName(displayName)
                 .Build();
             
             var sut = CreateSut();
