@@ -166,7 +166,7 @@ namespace Lambda.Tests.Unit
             );
         }
 
-        private Function CreateSut()
+        private static Function CreateSut()
         {
             return CreateSut(
                 HttpStatusCode.OK,
@@ -175,7 +175,7 @@ namespace Lambda.Tests.Unit
                 "Bar");
         }
         
-        private Function CreateSut(
+        private static Function CreateSut(
             HttpStatusCode httpStatusCode,
             string username,
             string password)
@@ -187,7 +187,7 @@ namespace Lambda.Tests.Unit
                 password);
         }
 
-        private Function CreateSut(
+        private static Function CreateSut(
             HttpStatusCode httpStatusCode,
             string url,
             string username,
@@ -208,7 +208,7 @@ namespace Lambda.Tests.Unit
             return function;
         }
 
-        private void SetEnvironmentVariables(
+        private static void SetEnvironmentVariables(
             string url,
             string username,
             string password)
