@@ -38,6 +38,26 @@ namespace Lambda.Tests.Unit
             result.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void GivenNotificationDisplayNameIsInvalid_ThenReturnsBadRequest(
+            string displayName)
+        {
+            var lambdaContext = Given.LambdaContext
+                .Build();
+            
+            var notification = Given.Notification
+                .WithDisplayName(displayName)
+                .Build();
+            
+            var sut = CreateSut();
+
+            var result = sut.Handler(notification, lambdaContext);
+
+            result.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+        }
+
         private Function CreateSut()
         {
             return new Function();
