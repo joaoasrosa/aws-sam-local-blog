@@ -24,18 +24,22 @@ namespace Lambda
             using (var httpClient = CreateHttpClient())
             {
                 var sms = new Sms(notification);
-                
-                var request = new HttpRequestMessage(HttpMethod.Post, "/v1/messages")
+
+                var request = new HttpRequestMessage(
+                    HttpMethod.Post,
+                    "/v1/messages"
+                )
                 {
                     Content = new StringContent(
                         sms.AsJson(),
                         Encoding.UTF8,
-                        "application/json")
+                        "application/json"
+                    )
                 };
 
                 var result = httpClient.SendAsync(request).Result;
 
-                result.EnsureSuccessStatusCode();
+                result.Validate();
             }
         }
 
