@@ -100,6 +100,28 @@ namespace Lambda.Tests.Unit
                 "the display name is invalid");
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void GivenNotificationDisplayNameIsInvalid_ThenReturnsReason(
+            string displayName)
+        {
+            var lambdaContext = Given.LambdaContext
+                .Build();
+            
+            var notification = Given.Notification
+                .WithPhoneNumber(displayName)
+                .Build();
+            
+            var sut = CreateSut();
+
+            var result = sut.Handler(notification, lambdaContext);
+
+            result.Body.Should().Be(
+                "Invalid Display Name.",
+                "the display name is invalid");
+        }
+
         private Function CreateSut()
         {
             return new Function();
