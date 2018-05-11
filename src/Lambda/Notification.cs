@@ -29,7 +29,7 @@ namespace Lambda
             if (string.IsNullOrWhiteSpace(DisplayName))
             {
                 isValid = false;
-                return "";
+                return "Invalid Display Name.";
             }
 
             return string.Empty;
