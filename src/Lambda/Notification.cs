@@ -18,7 +18,8 @@ namespace Lambda
 
         internal bool IsValid()
         {
-            return string.IsNullOrWhiteSpace(PhoneNumber) == false;
+            return string.IsNullOrWhiteSpace(PhoneNumber) == false &&
+                   string.IsNullOrWhiteSpace(DisplayName) == false;
         }
     }
 }
