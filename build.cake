@@ -28,6 +28,7 @@ var lambdaProjects = new []
 };
 
 var unitTestsProjects = GetFiles(testsDir.Path + "/**/*.Tests.Unit.csproj");
+var acceptanceTestsProjects = GetFiles(testsDir.Path + "/**/*.Tests.Acceptance.csproj");
 
 // DOCKER
 var dockerImageName = "joaoasrosa/testing-api";
@@ -168,6 +169,10 @@ Task("Build")
 Task("Test-Unit")
     .Description("Runs all your unit tests, using dotnet CLI.")
     .Does(() => { Test(unitTestsProjects); });
+
+Task("Test-Acceptance")
+    .Description("Runs all your acceptance tests, using dotnet CLI.")
+    .Does(() => { Test(acceptanceTestsProjects); });
 
 Task("Publish")
     .Description("Publish the Lambda Functions.")
