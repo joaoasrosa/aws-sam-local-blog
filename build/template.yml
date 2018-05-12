@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: LaLaLand Store SMS testing environment
+
+Resources:
+  Lambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: Lambda::Lambda.Function::Handler
+      CodeUri: ./Lambda.zip
+      Runtime: dotnetcore2.0
+      Environment:
+        Variables:
+          BULKSMS_URL: http://testing-api:80/
+          BULKSMS_USERNAME: foo
+          BULKSMS_PASSWORD: bar
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: post
