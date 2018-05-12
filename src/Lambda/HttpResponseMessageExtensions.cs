@@ -13,13 +13,13 @@ namespace Lambda
             {
                 case HttpStatusCode.OK:
                     return;
-                
+
                 case HttpStatusCode.Unauthorized:
                     throw new InvalidCredentials();
-                
+
                 case HttpStatusCode.Forbidden:
                     throw new InsufficientCredits();
-                    
+
                 case HttpStatusCode.Accepted:
 
                 case HttpStatusCode.Ambiguous:

@@ -95,7 +95,7 @@ namespace Lambda.Tests.Unit
             var sut = CreateSut();
 
             var result = sut.Handler(notification, lambdaContext);
-          
+
             var errorResult = JsonConvert.DeserializeObject<ErrorResult>(
                 result.Body
             );
@@ -131,77 +131,6 @@ namespace Lambda.Tests.Unit
             result.StatusCode.Should().Be(
                 (int) HttpStatusCode.Unauthorized,
                 "the client has provided invalid credentials");
-        }
-
-        [Fact]
-        public void GivenInsufficientCredits_ThenReturnsForbidden()
-        {
-            var lambdaContext = Given.LambdaContext
-                .Build();
-
-            var notification = Given.Notification
-                .Build();
-
-            var sut = CreateSut(
-                HttpStatusCode.Forbidden);
-
-            var result = sut.Handler(notification, lambdaContext);
-
-            result.StatusCode.Should().Be(
-                (int) HttpStatusCode.Forbidden,
-                "the client has insufficient credits");
-        }
-
-        [Fact]
-        public void GivenSmsIsSent_ThenReturnsOk()
-        {
-            var lambdaContext = Given.LambdaContext
-                .Build();
-
-            var notification = Given.Notification
-                .Build();
-
-            var sut = CreateSut(
-                HttpStatusCode.OK);
-
-            var result = sut.Handler(notification, lambdaContext);
-
-            result.StatusCode.Should().Be(
-                (int) HttpStatusCode.OK,
-                "the SMS was sent");
-        }
-
-        [Fact]
-        public void GivenNullNotification_ThenReturnsBadRequest()
-        {
-            var lambdaContext = Given.LambdaContext.Build();
-
-            var sut = CreateSut();
-
-            var result = sut.Handler(null, lambdaContext);
-
-            result.StatusCode.Should().Be(
-                (int) HttpStatusCode.BadRequest,
-                "the notification is null");
-        }
-
-        [Fact]
-        public void GivenNullNotification_ThenReturnsReason()
-        {
-            var lambdaContext = Given.LambdaContext.Build();
-
-            var sut = CreateSut();
-
-            var result = sut.Handler(null, lambdaContext);
-
-            var errorResult = JsonConvert.DeserializeObject<ErrorResult>(
-                result.Body
-            );
-
-            errorResult.Reason.Should().Be(
-                "The Notification is null.",
-                "the notification is null"
-            );
         }
 
         private static Function CreateSut()
@@ -273,6 +202,77 @@ namespace Lambda.Tests.Unit
                 "SMS_API_PASSWORD",
                 password
             );
+        }
+
+        [Fact]
+        public void GivenInsufficientCredits_ThenReturnsForbidden()
+        {
+            var lambdaContext = Given.LambdaContext
+                .Build();
+
+            var notification = Given.Notification
+                .Build();
+
+            var sut = CreateSut(
+                HttpStatusCode.Forbidden);
+
+            var result = sut.Handler(notification, lambdaContext);
+
+            result.StatusCode.Should().Be(
+                (int) HttpStatusCode.Forbidden,
+                "the client has insufficient credits");
+        }
+
+        [Fact]
+        public void GivenNullNotification_ThenReturnsBadRequest()
+        {
+            var lambdaContext = Given.LambdaContext.Build();
+
+            var sut = CreateSut();
+
+            var result = sut.Handler(null, lambdaContext);
+
+            result.StatusCode.Should().Be(
+                (int) HttpStatusCode.BadRequest,
+                "the notification is null");
+        }
+
+        [Fact]
+        public void GivenNullNotification_ThenReturnsReason()
+        {
+            var lambdaContext = Given.LambdaContext.Build();
+
+            var sut = CreateSut();
+
+            var result = sut.Handler(null, lambdaContext);
+
+            var errorResult = JsonConvert.DeserializeObject<ErrorResult>(
+                result.Body
+            );
+
+            errorResult.Reason.Should().Be(
+                "The Notification is null.",
+                "the notification is null"
+            );
+        }
+
+        [Fact]
+        public void GivenSmsIsSent_ThenReturnsOk()
+        {
+            var lambdaContext = Given.LambdaContext
+                .Build();
+
+            var notification = Given.Notification
+                .Build();
+
+            var sut = CreateSut(
+                HttpStatusCode.OK);
+
+            var result = sut.Handler(notification, lambdaContext);
+
+            result.StatusCode.Should().Be(
+                (int) HttpStatusCode.OK,
+                "the SMS was sent");
         }
     }
 }

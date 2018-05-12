@@ -13,7 +13,7 @@
                 isValid = false;
                 return "The Notification is null.";
             }
-            
+
             if (string.IsNullOrWhiteSpace(notification.PhoneNumber))
             {
                 isValid = false;
