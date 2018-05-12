@@ -7,5 +7,5 @@ dotnet: 2.0.3
 dist: trusty
 install:
   - pip install requests[security]
-  - pip install aws-sam-cli
+  - pip install --user aws-sam-cli
 script: bash ./build.sh --target=TravisCI
