@@ -38,7 +38,9 @@ namespace Lambda.Tests.Acceptance
 
         private void Insufficient_Credits_For_User_Account()
         {
-            Given.TestingApiConfiguredForInsufficientCredits();
+            _context.SetTestingApiContainer(
+                Given.TestingApiConfiguredForInsufficientCredits()
+            );
 
             _context.SetApiGateway(
                 Given.ApiGatewayIsRunning()
