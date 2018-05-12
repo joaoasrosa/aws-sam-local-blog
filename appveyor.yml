@@ -1,5 +1,7 @@
 version: '{build}'
 image: Visual Studio 2017
+install:
+  - ps: pip install --user aws-sam-cli
 build_script:
-- ps: .\build.ps1 --target=AppVeyor
+  - ps: .\build.ps1 --target=AppVeyor
 test: off
