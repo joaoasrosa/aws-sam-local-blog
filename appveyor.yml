@@ -1,7 +1,7 @@
 version: '{build}'
 image: Visual Studio 2017
 install:
-  - ps: pip install --upgrade pip
+  - ps: pip install requests[security]
   - ps: pip install --user aws-sam-cli
 build_script:
   - ps: .\build.ps1 --target=AppVeyor
