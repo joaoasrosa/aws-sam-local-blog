@@ -6,7 +6,7 @@ using Amazon.Lambda.Core;
 using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(JsonSerializer))]
+[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
 namespace Lambda
 {
@@ -81,7 +81,7 @@ namespace Lambda
             );
         }
 
-        private SmsClientSettings CreateSmsSettings()
+        private static SmsClientSettings CreateSmsSettings()
         {
             return new SmsClientSettings(
                 Environment.GetEnvironmentVariable("SMS_API_URL"),
@@ -90,7 +90,7 @@ namespace Lambda
             );
         }
 
-        private string CreateResponseBodyFromErrorResult(
+        private static string CreateResponseBodyFromErrorResult(
             ErrorResult errorResult)
         {
             return JsonConvert.SerializeObject(errorResult);

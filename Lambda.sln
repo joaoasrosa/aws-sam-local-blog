@@ -9,6 +9,9 @@ ProjectSection(SolutionItems) = preProject
 	build.cake = build.cake
 	appveyor.yml = appveyor.yml
 	.travis.yml = .travis.yml
+	build\dockerfile = build\dockerfile
+	build\template.yml = build\template.yml
+	build\event.json = build\event.json
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DFE8FC46-16C3-43EE-8618-F2B33D4A4E09}"

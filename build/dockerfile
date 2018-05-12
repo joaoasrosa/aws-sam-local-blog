@@ -1,0 +1,5 @@
+FROM microsoft/aspnetcore:2.0.7
+WORKDIR /app
+COPY . /app
+ENTRYPOINT ["dotnet", "Lambda.Api.Tests.dll"]
+MAINTAINER joaoasrosa
