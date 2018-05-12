@@ -287,43 +287,6 @@ Task("Create-Container")
         Information("Container '{0}' has been built.", dockerImageName);
     });
 
-Task("Start-Container")
-	.Description("Starts a Docker container for the Testing API.")
-	.Does(() => 
-    {
-        var settings = new DockerContainerRunSettings
-        {
-            Detach = true,
-            Interactive = true,
-            Publish = new[] { "8000:80" },
-            Name = dockerContainerName,
-            Network = dockerNetworkName
-        };
-        
-        Information("Starting the container '{0}'.", dockerContainerName);
-        DockerRun(settings, dockerImageName, string.Empty, null);
-        Information("Container '{0}' has been started.", dockerContainerName);
-    });
-    
-Task("Run-Local")
-	.Description("Runs all the acceptance tests locally.")
-	.Does(() => 
-    {
-        var settings = new ProcessSettings
-        { 
-            Arguments = $"local invoke --docker-network {dockerNetworkName} --event event.json \"Lambda\"",
-            WorkingDirectory = localDeployDir
-        };
-        
-        Information("Starting the SAM local...");
-        using(var process = StartAndReturnProcess("sam", settings))
-        {
-            process.WaitForExit();
-            Information("Exit code: {0}", process.GetExitCode());
-        }
-        Information("SAM local has finished.");
-    });
-
 Task("Stop-Container")
 	.Description("Stops the Docker container.")
 	.Does(() => 
@@ -385,8 +348,7 @@ Task("Test-Local")
     .IsDependentOn("Deploy-Local")
     .IsDependentOn("Create-Container")
     .IsDependentOn("Create-Network")
-    .IsDependentOn("Start-Container")
-    .IsDependentOn("Run-Local")
+    .IsDependentOn("Test-Acceptance")
     .IsDependentOn("Clean-Docker")
     .IsDependentOn("Remove-Container")
     .IsDependentOn("Remove-Network")
@@ -420,8 +382,7 @@ Task("TravisCI")
     .IsDependentOn("Deploy-Local")
     .IsDependentOn("Create-Container")
     .IsDependentOn("Create-Network")
-    .IsDependentOn("Start-Container")
-    .IsDependentOn("Run-Local")
+    .IsDependentOn("Test-Acceptance")
     .IsDependentOn("Clean-Docker")
     .IsDependentOn("Remove-Container")
     .IsDependentOn("Remove-Network")
