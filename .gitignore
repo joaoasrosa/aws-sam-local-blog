@@ -306,3 +306,6 @@ artifacts/
 
 # publish
 publish/
+
+#macOS
+.DS_Store
