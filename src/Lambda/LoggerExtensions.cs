@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -16,7 +17,6 @@ namespace Lambda
                 notification?.PhoneNumber
             );
         }
-
         
         internal static void RecordValidationFailureReason(
             this ILogger logger,
@@ -24,6 +24,15 @@ namespace Lambda
         {
             logger.Information("The failed the validation with '{errorResultReason}'.",
                 errorResult.Reason
+            );
+        }
+        
+        internal static void RecordApiResponse(
+            this ILogger logger,
+            HttpResponseMessage httpResponseMessage)
+        {
+            logger.Information("The response for the SMS API was '{@httpResponseMessage}'.",
+                httpResponseMessage
             );
         }
         

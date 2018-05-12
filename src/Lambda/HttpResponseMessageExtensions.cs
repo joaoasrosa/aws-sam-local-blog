@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using Serilog;
+using Serilog.Core;
 
 namespace Lambda
 {
@@ -9,6 +11,10 @@ namespace Lambda
         internal static void Validate(
             this HttpResponseMessage httpResponseMessage)
         {
+            Log.Logger.RecordApiResponse(
+                httpResponseMessage
+            );
+            
             switch (httpResponseMessage.StatusCode)
             {
                 case HttpStatusCode.OK:
