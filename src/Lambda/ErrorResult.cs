@@ -10,7 +10,6 @@ namespace Lambda
             Reason = reason;
         }
 
-        [JsonProperty("reason")] 
-        internal string Reason { get; }
+        [JsonProperty("reason")] internal string Reason { get; }
     }
 }

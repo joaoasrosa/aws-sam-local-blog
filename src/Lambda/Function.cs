@@ -26,7 +26,7 @@ namespace Lambda
                 {
                     var errorResult = new ErrorResult(
                         validationFailureReason);
-                    
+
                     return new APIGatewayProxyResponse
                     {
                         StatusCode = (int) HttpStatusCode.BadRequest,
