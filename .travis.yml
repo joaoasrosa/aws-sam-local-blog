@@ -6,6 +6,6 @@ mono: latest
 dotnet: 2.0.3
 dist: trusty
 install:
-  - pip install --upgrade pip 
+  - pip install requests[security]
   - pip install aws-sam-cli
 script: bash ./build.sh --target=TravisCI
