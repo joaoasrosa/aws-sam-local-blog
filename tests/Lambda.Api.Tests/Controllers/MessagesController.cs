@@ -10,6 +10,11 @@ namespace Lambda.Api.Tests.Controllers
         public IActionResult Send(
             [FromBody] Sms sms)
         {
+            return SmsResponseFactory();
+        }
+
+        private static IActionResult SmsResponseFactory()
+        {
             throw new NotImplementedException();
         }
     }
