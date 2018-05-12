@@ -4,6 +4,7 @@ using System.Net.Http;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Newtonsoft.Json;
+using Serilog;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -20,6 +21,12 @@ namespace Lambda
         {
             try
             {
+                ConfigureLogger(context.AwsRequestId);
+                
+                Log.Logger.RecordNotification(
+                    notification
+                );
+                
                 var validationFailureReason = notification.Validate(out var isValid);
 
                 if (isValid == false)
@@ -27,6 +34,10 @@ namespace Lambda
                     var errorResult = new ErrorResult(
                         validationFailureReason);
 
+                    Log.Logger.RecordValidationFailureReason(
+                        errorResult
+                    );
+                    
                     return new APIGatewayProxyResponse
                     {
                         StatusCode = (int) HttpStatusCode.BadRequest,
@@ -56,6 +67,8 @@ namespace Lambda
                         statusCode = HttpStatusCode.Forbidden;
                         break;
                 }
+                
+                Log.Logger.RecordException(exception);
 
                 return new APIGatewayProxyResponse
                 {
@@ -79,6 +92,15 @@ namespace Lambda
                 settings,
                 httpMessageHandler
             );
+        }
+
+        private static void ConfigureLogger(
+            string requestId)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .Enrich.WithProperty("RequestId", requestId)
+                .CreateLogger();
         }
 
         private static SmsClientSettings CreateSmsSettings()
