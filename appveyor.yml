@@ -1,5 +1,10 @@
 version: '{build}'
 image: Visual Studio 2017
+install:
+  - ps: python -m pip install --upgrade pip
+  - ps: pip install requests[security]
+  - ps: $env:PATH += ";C:\Users\appveyor\AppData\Roaming\Python\Scripts"
+  - ps: pip install --user aws-sam-cli
 build_script:
-- ps: .\build.ps1 --target=AppVeyor
+  - ps: .\build.ps1 --target=AppVeyor
 test: off

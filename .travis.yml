@@ -1,5 +1,11 @@
 language: csharp
+sudo: required
+services:
+  - docker
 mono: latest
 dotnet: 2.0.3
 dist: trusty
+install:
+  - pip install requests[security]
+  - pip install --user aws-sam-cli
 script: bash ./build.sh --target=TravisCI
