@@ -2,7 +2,7 @@
 
 namespace Lambda
 {
-    public class Notification
+    internal class Notification
     {
         [JsonConstructor]
         internal Notification(

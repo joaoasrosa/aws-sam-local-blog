@@ -27,6 +27,18 @@ namespace Lambda
             );
         }
         
+        internal static void RecordInvalidCredentials(
+            this ILogger logger)
+        {
+            logger.Error("The credentials supplied are invalid.");
+        }
+        
+        internal static void RecordInsufficientCredits(
+            this ILogger logger)
+        {
+            logger.Error("The account doesn't have sufficient credits.");
+        }
+        
         internal static void RecordException(
             this ILogger logger,
             Exception exception)

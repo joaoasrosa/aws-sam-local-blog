@@ -16,12 +16,16 @@ namespace Lambda
         private HttpMessageHandler _httpMessageHandler;
 
         public APIGatewayProxyResponse Handler(
-            Notification notification,
+            APIGatewayProxyRequest request,
             ILambdaContext context)
         {
             try
             {
                 ConfigureLogger(context.AwsRequestId);
+
+                var notification = JsonConvert.DeserializeObject<Notification>(
+                    request.Body
+                );
                 
                 Log.Logger.RecordNotification(
                     notification
@@ -62,13 +66,16 @@ namespace Lambda
                 {
                     case InvalidCredentials _:
                         statusCode = HttpStatusCode.Unauthorized;
+                        Log.Logger.RecordInvalidCredentials();
                         break;
                     case InsufficientCredits _:
                         statusCode = HttpStatusCode.Forbidden;
+                        Log.Logger.RecordInsufficientCredits();
+                        break;
+                    default:
+                        Log.Logger.RecordException(exception);
                         break;
                 }
-                
-                Log.Logger.RecordException(exception);
 
                 return new APIGatewayProxyResponse
                 {
@@ -77,7 +84,7 @@ namespace Lambda
             }
         }
 
-        internal void OverrideHttpMessageHandler(
+        public void OverrideHttpMessageHandler(
             HttpMessageHandler httpMessageHandler)
         {
             _httpMessageHandler = httpMessageHandler;
