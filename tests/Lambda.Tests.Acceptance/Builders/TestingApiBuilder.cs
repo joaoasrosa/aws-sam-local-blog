@@ -10,6 +10,12 @@
             return this;
         }
 
+        internal TestingApiBuilder WithInsufficientCredits()
+        {
+            _apiBehaviour = "insufficient_credits";
+            return this;
+        }
+
         internal Container Build()
         {
             return new Container(

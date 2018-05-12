@@ -22,5 +22,16 @@ So I can communicate")]
                 then => The_Api_returns_Unauthorized()
             );
         }
+        
+        [Scenario]
+        [Label("Insufficient Credits")]
+        public void Insufficient_Credits()
+        {
+            Runner.RunScenario(
+                given => Insufficient_Credits_For_User_Account(),
+                when => The_user_tries_to_send_an_sms(),
+                then => The_Api_returns_Forbidden()
+            );
+        }
     }
 }

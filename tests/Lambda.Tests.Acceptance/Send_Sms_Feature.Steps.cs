@@ -14,9 +14,31 @@ namespace Lambda.Tests.Acceptance
             _context = new Context();
         }
 
+        public void Dispose()
+        {
+            _context
+                .TestingApiContainer
+                .Stop();
+            
+            _context
+                .Gateway
+                .Stop();
+        }
+
         private void Invalid_Api_Credentials()
         {
-            Given.TestingApiConfiguredForInvalidCredentials();
+            _context.SetTestingApiContainer(
+                Given.TestingApiConfiguredForInvalidCredentials()
+            );
+            
+            _context.SetApiGateway(
+                Given.ApiGatewayIsRunning()
+            );
+        }
+
+        private void Insufficient_Credits_For_User_Account()
+        {
+            Given.TestingApiConfiguredForInsufficientCredits();
 
             _context.SetApiGateway(
                 Given.ApiGatewayIsRunning()
@@ -39,11 +61,13 @@ namespace Lambda.Tests.Acceptance
                 .Be(HttpStatusCode.Unauthorized);
         }
 
-        public void Dispose()
+        private void The_Api_returns_Forbidden()
         {
             _context
-                .Gateway
-                .Stop();
+                .SmsResult
+                .StatusCode
+                .Should()
+                .Be(HttpStatusCode.Forbidden);
         }
     }
 }
