@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
 
-namespace Lambda
+namespace Lambda.Tests.Acceptance
 {
     internal class Notification
     {
-        [JsonConstructor]
         internal Notification(
             string phoneNumber,
             string displayName)
@@ -13,7 +12,10 @@ namespace Lambda
             DisplayName = displayName;
         }
 
+        [JsonProperty("phoneNumber")]
         internal string PhoneNumber { get; }
+
+        [JsonProperty("displayName")]
         internal string DisplayName { get; }
     }
 }

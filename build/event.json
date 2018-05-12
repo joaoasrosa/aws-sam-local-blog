@@ -1,4 +1,1 @@
-{
-  "phoneNumber":"123456789",
-  "displayName":"foo"
-}
+{"Resource": "/", "Path": "/", "HttpMethod": "POST", "Headers": {"Content-Length": "54", "X-Forwarded-Proto": "http", "X-Forwarded-Port": "3000", "Content-Type": "text/plain; charset=utf-8", "Host": "127.0.0.1:3000", "Accept": "application/json"}, "QueryStringParameters": null, "PathParameters": null, "StageVariables": null, "RequestContext": {"Path": "/", "AccountId": "123456789012", "ResourceId": "123456", "Stage": "prod", "RequestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef", "Identity": {"CognitoIdentityPoolId": null, "AccountId": null, "CognitoIdentityId": null, "Caller": null, "ApiKey": null, "SourceIp": "127.0.0.1", "CognitoAuthenticationType": null, "CognitoAuthenticationProvider": null, "UserArn": null, "UserAgent": "Custom User Agent String", "User": null, "$type": "RequestIdentity"}, "ResourcePath": "/", "HttpMethod": "POST", "ApiId": "1234567890", "Authorizer": null, "$type": "ProxyRequestContext"}, "Body": "{\"phoneNumber\":\"123456789\",\"displayName\":\"João Rosa\"}", "IsBase64Encoded": false} 

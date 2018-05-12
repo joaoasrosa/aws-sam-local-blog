@@ -28,6 +28,7 @@ var lambdaProjects = new []
 };
 
 var unitTestsProjects = GetFiles(testsDir.Path + "/**/*.Tests.Unit.csproj");
+var acceptanceTestsProjects = GetFiles(testsDir.Path + "/**/*.Tests.Acceptance.csproj");
 
 // DOCKER
 var dockerImageName = "joaoasrosa/testing-api";
@@ -169,6 +170,10 @@ Task("Test-Unit")
     .Description("Runs all your unit tests, using dotnet CLI.")
     .Does(() => { Test(unitTestsProjects); });
 
+Task("Test-Acceptance")
+    .Description("Runs all your acceptance tests, using dotnet CLI.")
+    .Does(() => { Test(acceptanceTestsProjects); });
+
 Task("Publish")
     .Description("Publish the Lambda Functions.")
     .Does(() => 
@@ -282,61 +287,6 @@ Task("Create-Container")
         Information("Container '{0}' has been built.", dockerImageName);
     });
 
-Task("Start-Container")
-	.Description("Starts a Docker container for the Testing API.")
-	.Does(() => 
-    {
-        var settings = new DockerContainerRunSettings
-        {
-            Detach = true,
-            Interactive = true,
-            Publish = new[] { "8000:80" },
-            Name = dockerContainerName,
-            Network = dockerNetworkName
-        };
-        
-        Information("Starting the container '{0}'.", dockerContainerName);
-        DockerRun(settings, dockerImageName, string.Empty, null);
-        Information("Container '{0}' has been started.", dockerContainerName);
-    });
-    
-Task("Run-Local")
-	.Description("Runs all the acceptance tests locally.")
-	.Does(() => 
-    {
-        var settings = new ProcessSettings
-        { 
-            Arguments = $"local invoke --docker-network {dockerNetworkName} --event event.json \"Lambda\"",
-            WorkingDirectory = localDeployDir
-        };
-        
-        Information("Starting the SAM local...");
-        using(var process = StartAndReturnProcess("sam", settings))
-        {
-            process.WaitForExit();
-            Information("Exit code: {0}", process.GetExitCode());
-        }
-        Information("SAM local has finished.");
-    });
-
-Task("Stop-Container")
-	.Description("Stops the Docker container.")
-	.Does(() => 
-    {
-        Information("Stopping the container '{0}'.", dockerContainerName);
-        DockerStop(dockerContainerName);
-        Information("Container '{0}' has been stopped.", dockerContainerName);
-    });
-
-Task("Remove-Container")
-	.Description("Removes the Docker container.")
-	.Does(() => 
-    {
-        Information("Removing the container '{0}'.", dockerContainerName);
-        DockerRm(dockerContainerName);
-        Information("Container '{0}' has been removed.", dockerContainerName);
-    });
-
 Task("Remove-Network")
 	.Description("Removes the Docker network.")
 	.Does(() => 
@@ -380,18 +330,13 @@ Task("Test-Local")
     .IsDependentOn("Deploy-Local")
     .IsDependentOn("Create-Container")
     .IsDependentOn("Create-Network")
-    .IsDependentOn("Start-Container")
-    .IsDependentOn("Run-Local")
-    .IsDependentOn("Clean-Docker")
-    .IsDependentOn("Remove-Container")
+    .IsDependentOn("Test-Acceptance")
     .IsDependentOn("Remove-Network")
     .IsDependentOn("Remove-Container-Image")
     .Does(() => { Information("Tested everything"); });
 
 Task("Clean-Docker")
     .Description("Clean Docker artifacts")
-    .IsDependentOn("Stop-Container")
-    .IsDependentOn("Remove-Container")
     .IsDependentOn("Remove-Network")
     .IsDependentOn("Remove-Container-Image")
     .Does(() => { Information("Cleaned everything"); });
@@ -415,10 +360,7 @@ Task("TravisCI")
     .IsDependentOn("Deploy-Local")
     .IsDependentOn("Create-Container")
     .IsDependentOn("Create-Network")
-    .IsDependentOn("Start-Container")
-    .IsDependentOn("Run-Local")
-    .IsDependentOn("Clean-Docker")
-    .IsDependentOn("Remove-Container")
+    .IsDependentOn("Test-Acceptance")
     .IsDependentOn("Remove-Network")
     .IsDependentOn("Remove-Container-Image")
     .Does(() => { Information("TravisCI target ran."); });

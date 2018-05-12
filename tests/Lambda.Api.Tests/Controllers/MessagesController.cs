@@ -23,7 +23,7 @@ namespace Lambda.Api.Tests.Controllers
                 case "invalid_credentials":
                     return new UnauthorizedResult();
                 case "insufficient_credits":
-                    return new ForbidResult();
+                    return new StatusCodeResult((int) HttpStatusCode.Forbidden);;
                 default:
                     return new StatusCodeResult((int) HttpStatusCode.InternalServerError);
             }

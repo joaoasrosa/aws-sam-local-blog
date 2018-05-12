@@ -31,7 +31,8 @@ namespace Lambda.Tests.Unit.Builders
         {
             return new Notification(
                 _phoneNumber,
-                _displayName);
+                _displayName
+            );
         }
     }
 }

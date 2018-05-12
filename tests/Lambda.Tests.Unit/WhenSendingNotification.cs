@@ -21,9 +21,13 @@ namespace Lambda.Tests.Unit
                 .WithPhoneNumber(phoneNumber)
                 .Build();
 
+            var apiRequest = Given.APIGatewayProxyRequest
+                .WithEvent(notification)
+                .Build();
+
             var sut = CreateSut();
 
-            var result = sut.Handler(notification, lambdaContext);
+            var result = sut.Handler(apiRequest, lambdaContext);
 
             result.StatusCode.Should().Be(
                 (int) HttpStatusCode.BadRequest,
@@ -43,9 +47,13 @@ namespace Lambda.Tests.Unit
                 .WithPhoneNumber(phoneNumber)
                 .Build();
 
+            var apiRequest = Given.APIGatewayProxyRequest
+                .WithEvent(notification)
+                .Build();
+
             var sut = CreateSut();
 
-            var result = sut.Handler(notification, lambdaContext);
+            var result = sut.Handler(apiRequest, lambdaContext);
 
             var errorResult = JsonConvert.DeserializeObject<ErrorResult>(
                 result.Body
@@ -70,9 +78,13 @@ namespace Lambda.Tests.Unit
                 .WithDisplayName(displayName)
                 .Build();
 
+            var apiRequest = Given.APIGatewayProxyRequest
+                .WithEvent(notification)
+                .Build();
+
             var sut = CreateSut();
 
-            var result = sut.Handler(notification, lambdaContext);
+            var result = sut.Handler(apiRequest, lambdaContext);
 
             result.StatusCode.Should().Be(
                 (int) HttpStatusCode.BadRequest,
@@ -92,9 +104,13 @@ namespace Lambda.Tests.Unit
                 .WithDisplayName(displayName)
                 .Build();
 
+            var apiRequest = Given.APIGatewayProxyRequest
+                .WithEvent(notification)
+                .Build();
+
             var sut = CreateSut();
 
-            var result = sut.Handler(notification, lambdaContext);
+            var result = sut.Handler(apiRequest, lambdaContext);
 
             var errorResult = JsonConvert.DeserializeObject<ErrorResult>(
                 result.Body
@@ -121,16 +137,66 @@ namespace Lambda.Tests.Unit
             var notification = Given.Notification
                 .Build();
 
+            var apiRequest = Given.APIGatewayProxyRequest
+                .WithEvent(notification)
+                .Build();
+
             var sut = CreateSut(
                 HttpStatusCode.Unauthorized,
                 username,
                 password);
 
-            var result = sut.Handler(notification, lambdaContext);
+            var result = sut.Handler(apiRequest, lambdaContext);
 
             result.StatusCode.Should().Be(
                 (int) HttpStatusCode.Unauthorized,
                 "the client has provided invalid credentials");
+        }
+
+        [Fact]
+        public void GivenInsufficientCredits_ThenReturnsForbidden()
+        {
+            var lambdaContext = Given.LambdaContext
+                .Build();
+
+            var notification = Given.Notification
+                .Build();
+
+            var apiRequest = Given.APIGatewayProxyRequest
+                .WithEvent(notification)
+                .Build();
+
+            var sut = CreateSut(
+                HttpStatusCode.Forbidden);
+
+            var result = sut.Handler(apiRequest, lambdaContext);
+
+            result.StatusCode.Should().Be(
+                (int) HttpStatusCode.Forbidden,
+                "the client has insufficient credits");
+        }
+
+        [Fact]
+        public void GivenSmsIsSent_ThenReturnsOk()
+        {
+            var lambdaContext = Given.LambdaContext
+                .Build();
+
+            var notification = Given.Notification
+                .Build();
+
+            var apiRequest = Given.APIGatewayProxyRequest
+                .WithEvent(notification)
+                .Build();
+
+            var sut = CreateSut(
+                HttpStatusCode.OK);
+
+            var result = sut.Handler(apiRequest, lambdaContext);
+
+            result.StatusCode.Should().Be(
+                (int) HttpStatusCode.OK,
+                "the SMS was sent");
         }
 
         private static Function CreateSut()
@@ -202,77 +268,6 @@ namespace Lambda.Tests.Unit
                 "SMS_API_PASSWORD",
                 password
             );
-        }
-
-        [Fact]
-        public void GivenInsufficientCredits_ThenReturnsForbidden()
-        {
-            var lambdaContext = Given.LambdaContext
-                .Build();
-
-            var notification = Given.Notification
-                .Build();
-
-            var sut = CreateSut(
-                HttpStatusCode.Forbidden);
-
-            var result = sut.Handler(notification, lambdaContext);
-
-            result.StatusCode.Should().Be(
-                (int) HttpStatusCode.Forbidden,
-                "the client has insufficient credits");
-        }
-
-        [Fact]
-        public void GivenNullNotification_ThenReturnsBadRequest()
-        {
-            var lambdaContext = Given.LambdaContext.Build();
-
-            var sut = CreateSut();
-
-            var result = sut.Handler(null, lambdaContext);
-
-            result.StatusCode.Should().Be(
-                (int) HttpStatusCode.BadRequest,
-                "the notification is null");
-        }
-
-        [Fact]
-        public void GivenNullNotification_ThenReturnsReason()
-        {
-            var lambdaContext = Given.LambdaContext.Build();
-
-            var sut = CreateSut();
-
-            var result = sut.Handler(null, lambdaContext);
-
-            var errorResult = JsonConvert.DeserializeObject<ErrorResult>(
-                result.Body
-            );
-
-            errorResult.Reason.Should().Be(
-                "The Notification is null.",
-                "the notification is null"
-            );
-        }
-
-        [Fact]
-        public void GivenSmsIsSent_ThenReturnsOk()
-        {
-            var lambdaContext = Given.LambdaContext
-                .Build();
-
-            var notification = Given.Notification
-                .Build();
-
-            var sut = CreateSut(
-                HttpStatusCode.OK);
-
-            var result = sut.Handler(notification, lambdaContext);
-
-            result.StatusCode.Should().Be(
-                (int) HttpStatusCode.OK,
-                "the SMS was sent");
         }
     }
 }

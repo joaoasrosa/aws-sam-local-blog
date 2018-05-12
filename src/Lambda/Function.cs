@@ -4,6 +4,7 @@ using System.Net.Http;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Newtonsoft.Json;
+using Serilog;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -15,11 +16,21 @@ namespace Lambda
         private HttpMessageHandler _httpMessageHandler;
 
         public APIGatewayProxyResponse Handler(
-            Notification notification,
+            APIGatewayProxyRequest request,
             ILambdaContext context)
         {
             try
             {
+                ConfigureLogger(context.AwsRequestId);
+
+                var notification = JsonConvert.DeserializeObject<Notification>(
+                    request.Body
+                );
+                
+                Log.Logger.RecordNotification(
+                    notification
+                );
+                
                 var validationFailureReason = notification.Validate(out var isValid);
 
                 if (isValid == false)
@@ -27,6 +38,10 @@ namespace Lambda
                     var errorResult = new ErrorResult(
                         validationFailureReason);
 
+                    Log.Logger.RecordValidationFailureReason(
+                        errorResult
+                    );
+                    
                     return new APIGatewayProxyResponse
                     {
                         StatusCode = (int) HttpStatusCode.BadRequest,
@@ -51,9 +66,14 @@ namespace Lambda
                 {
                     case InvalidCredentials _:
                         statusCode = HttpStatusCode.Unauthorized;
+                        Log.Logger.RecordInvalidCredentials();
                         break;
                     case InsufficientCredits _:
                         statusCode = HttpStatusCode.Forbidden;
+                        Log.Logger.RecordInsufficientCredits();
+                        break;
+                    default:
+                        Log.Logger.RecordException(exception);
                         break;
                 }
 
@@ -64,7 +84,7 @@ namespace Lambda
             }
         }
 
-        internal void OverrideHttpMessageHandler(
+        public void OverrideHttpMessageHandler(
             HttpMessageHandler httpMessageHandler)
         {
             _httpMessageHandler = httpMessageHandler;
@@ -79,6 +99,15 @@ namespace Lambda
                 settings,
                 httpMessageHandler
             );
+        }
+
+        private static void ConfigureLogger(
+            string requestId)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .Enrich.WithProperty("RequestId", requestId)
+                .CreateLogger();
         }
 
         private static SmsClientSettings CreateSmsSettings()

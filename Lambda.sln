@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lambda.Tests.Unit", "tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lambda.Api.Tests", "tests\Lambda.Api.Tests\Lambda.Api.Tests.csproj", "{D52C1F00-5623-4FFA-84D8-0FCC252D2277}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lambda.Tests.Acceptance", "tests\Lambda.Tests.Acceptance\Lambda.Tests.Acceptance.csproj", "{4BFDEED3-EF22-45A4-BAEA-E815F88676FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,10 +47,15 @@ Global
 		{D52C1F00-5623-4FFA-84D8-0FCC252D2277}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D52C1F00-5623-4FFA-84D8-0FCC252D2277}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D52C1F00-5623-4FFA-84D8-0FCC252D2277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BFDEED3-EF22-45A4-BAEA-E815F88676FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BFDEED3-EF22-45A4-BAEA-E815F88676FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BFDEED3-EF22-45A4-BAEA-E815F88676FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BFDEED3-EF22-45A4-BAEA-E815F88676FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E0474702-E61C-470A-BB3B-A420207BB5AC} = {14F473CC-C62C-4822-AB27-D67957722F8A}
 		{D105658D-E621-4E4E-B725-8A063F3CDAF9} = {DFE8FC46-16C3-43EE-8618-F2B33D4A4E09}
 		{D52C1F00-5623-4FFA-84D8-0FCC252D2277} = {DFE8FC46-16C3-43EE-8618-F2B33D4A4E09}
+		{4BFDEED3-EF22-45A4-BAEA-E815F88676FD} = {DFE8FC46-16C3-43EE-8618-F2B33D4A4E09}
 	EndGlobalSection
 EndGlobal
