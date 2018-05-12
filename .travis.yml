@@ -5,5 +5,7 @@ services:
 mono: latest
 dotnet: 2.0.3
 dist: trusty
-install: pip install aws-sam-cli
+install:
+  - pip install --upgrade pip 
+  - pip install aws-sam-cli
 script: bash ./build.sh --target=TravisCI
