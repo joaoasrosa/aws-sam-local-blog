@@ -287,24 +287,6 @@ Task("Create-Container")
         Information("Container '{0}' has been built.", dockerImageName);
     });
 
-Task("Stop-Container")
-	.Description("Stops the Docker container.")
-	.Does(() => 
-    {
-        Information("Stopping the container '{0}'.", dockerContainerName);
-        DockerStop(dockerContainerName);
-        Information("Container '{0}' has been stopped.", dockerContainerName);
-    });
-
-Task("Remove-Container")
-	.Description("Removes the Docker container.")
-	.Does(() => 
-    {
-        Information("Removing the container '{0}'.", dockerContainerName);
-        DockerRm(dockerContainerName);
-        Information("Container '{0}' has been removed.", dockerContainerName);
-    });
-
 Task("Remove-Network")
 	.Description("Removes the Docker network.")
 	.Does(() => 
@@ -349,16 +331,12 @@ Task("Test-Local")
     .IsDependentOn("Create-Container")
     .IsDependentOn("Create-Network")
     .IsDependentOn("Test-Acceptance")
-    .IsDependentOn("Clean-Docker")
-    .IsDependentOn("Remove-Container")
     .IsDependentOn("Remove-Network")
     .IsDependentOn("Remove-Container-Image")
     .Does(() => { Information("Tested everything"); });
 
 Task("Clean-Docker")
     .Description("Clean Docker artifacts")
-    .IsDependentOn("Stop-Container")
-    .IsDependentOn("Remove-Container")
     .IsDependentOn("Remove-Network")
     .IsDependentOn("Remove-Container-Image")
     .Does(() => { Information("Cleaned everything"); });
@@ -383,8 +361,6 @@ Task("TravisCI")
     .IsDependentOn("Create-Container")
     .IsDependentOn("Create-Network")
     .IsDependentOn("Test-Acceptance")
-    .IsDependentOn("Clean-Docker")
-    .IsDependentOn("Remove-Container")
     .IsDependentOn("Remove-Network")
     .IsDependentOn("Remove-Container-Image")
     .Does(() => { Information("TravisCI target ran."); });
