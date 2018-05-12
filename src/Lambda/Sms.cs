@@ -11,11 +11,14 @@ namespace Lambda
             Body = GenerateSmsBody(notification);
         }
 
-        [JsonProperty("to")] internal string To { get; }
+        [JsonProperty("to")] 
+        internal string To { get; }
 
-        [JsonProperty("body")] internal string Body { get; }
+        [JsonProperty("body")] 
+        internal string Body { get; }
 
-        [JsonProperty("type")] internal string Type => "SMS";
+        [JsonProperty("type")] 
+        internal string Type => "SMS";
 
         internal string AsJson()
         {
