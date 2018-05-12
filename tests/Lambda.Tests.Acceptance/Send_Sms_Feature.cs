@@ -33,5 +33,16 @@ So I can communicate")]
                 then => The_Api_returns_Forbidden()
             );
         }
+        
+        [Scenario]
+        [Label("Notification is valid")]
+        public void Notification_is_valid()
+        {
+            Runner.RunScenario(
+                given => The_notification_is_valid(),
+                when => The_user_tries_to_send_an_sms(),
+                then => The_Api_returns_Ok()
+            );
+        }
     }
 }

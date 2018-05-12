@@ -28,6 +28,18 @@ namespace Lambda.Tests.Acceptance
             return container;
         }
 
+        internal static Container TestingApiConfiguredForNotificationIsValid()
+        {
+            var container = Docker
+                .TestingApi
+                .WithNotificationIsValid()
+                .Build();
+
+            container.Start();
+            
+            return container;
+        }
+
         internal static ApiGateway ApiGatewayIsRunning()
         {
             var apiGateway = SamLocal

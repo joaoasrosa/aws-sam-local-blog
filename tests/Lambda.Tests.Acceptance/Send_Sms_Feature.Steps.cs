@@ -47,6 +47,17 @@ namespace Lambda.Tests.Acceptance
             );
         }
 
+        private void The_notification_is_valid()
+        {
+            _context.SetTestingApiContainer(
+                Given.TestingApiConfiguredForNotificationIsValid()
+            );
+
+            _context.SetApiGateway(
+                Given.ApiGatewayIsRunning()
+            );
+        }
+
         private void The_user_tries_to_send_an_sms()
         {
             _context.SetSmsResult(
@@ -70,6 +81,15 @@ namespace Lambda.Tests.Acceptance
                 .StatusCode
                 .Should()
                 .Be(HttpStatusCode.Forbidden);
+        }
+
+        private void The_Api_returns_Ok()
+        {
+            _context
+                .SmsResult
+                .StatusCode
+                .Should()
+                .Be(HttpStatusCode.OK);
         }
     }
 }

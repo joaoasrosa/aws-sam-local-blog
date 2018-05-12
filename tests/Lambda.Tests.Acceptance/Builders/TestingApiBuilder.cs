@@ -16,6 +16,12 @@
             return this;
         }
 
+        internal TestingApiBuilder WithNotificationIsValid()
+        {
+            _apiBehaviour = "ok";
+            return this;
+        }
+
         internal Container Build()
         {
             return new Container(
