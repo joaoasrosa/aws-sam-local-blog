@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Lambda.Api.Tests.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,17 @@ namespace Lambda.Api.Tests.Controllers
 
         private static IActionResult SmsResponseFactory()
         {
-            throw new NotImplementedException();
+            switch (Environment.GetEnvironmentVariable("API_BEHAVIOUR"))
+            {
+                case "ok":
+                    return new OkResult();
+                case "invalid_credentials":
+                    return new UnauthorizedResult();
+                case "insufficient_credits":
+                    return new ForbidResult();
+                default:
+                    return new StatusCodeResult((int) HttpStatusCode.InternalServerError);
+            }
         }
     }
 }
