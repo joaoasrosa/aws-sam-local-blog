@@ -307,5 +307,9 @@ artifacts/
 # publish
 publish/
 
+# local-deploy
+local-deploy/
+
 #macOS
 .DS_Store
+
