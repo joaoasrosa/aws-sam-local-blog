@@ -259,8 +259,16 @@ Task("Create-Network")
 	.Description("Creates a Docker network.")
 	.Does(() => 
     {
+        bool isWindows = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+            System.Runtime.InteropServices.OSPlatform.Windows);
+            
+        var settings = new DockerNetworkCreateSettings
+        {
+            Driver = isWindows ? "nat" : "bridge"
+        };
+            
         Information("Creating the Docker network '{0}'.", dockerNetworkName);
-        DockerNetworkCreate(dockerNetworkName);
+        DockerNetworkCreate(settings, dockerNetworkName);
         Information("Docker network '{0}' has been created.", dockerNetworkName);
     });
 
