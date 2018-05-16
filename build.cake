@@ -264,7 +264,7 @@ Task("Create-Network")
             
         var settings = new DockerNetworkCreateSettings
         {
-            Driver = isWindows ? "nat" : "bridge"
+            Driver = isWindows ? "transparent" : "bridge"
         };
             
         Information("Creating the Docker network '{0}'.", dockerNetworkName);
