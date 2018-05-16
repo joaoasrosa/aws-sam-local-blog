@@ -3,6 +3,7 @@ image: Visual Studio 2017
 init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
+  - ps: .\build\clean_container_network.ps1 -Cleanup -ForceDeleteAllSwitches
   - ps: .\build\configure_appveyor_agent.ps1
 build_script:
   - ps: .\build.ps1 --target=AppVeyor
