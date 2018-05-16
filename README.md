@@ -10,9 +10,9 @@ This repo presents one approach to use SAM Local in a real-world scenario. It pr
 Using AWS Lambda, I want to send notifications to a 3rd party API using SMS. The AWS Lambda is behind an AWS API Gateway, and the requests and responses are being proxy.
 
 The 3rd party API can return the following responses:
-* Invalid credentials (Unauthorized (401)) - If the client does not set the proper credentials using the Authorization HTTP header, the API returns an Unauthorized HTTP Status Code
-* Insufficient Credits (Forbidden (403)) - If the user account doesn't have credits to use the resources, the API returns a Forbidden HTTP Status Code
-* Ok (OK (200)) - If the API sends the SMS, it returns an Ok HTTP Status Code
+* Invalid credentials (`Unauthorized (401)`) - If the client does not set the proper credentials using the Authorization HTTP header, the API returns an `Unauthorized` HTTP Status Code
+* Insufficient Credits (`Forbidden (403)`) - If the user account doesn't have credits to use the resources, the API returns a `Forbidden` HTTP Status Code
+* Ok (`OK (200)`) - If the API sends the SMS, it returns an `Ok` HTTP Status Code
 
 ## Implementation
 
@@ -20,7 +20,7 @@ The AWS Lambda function is implemented using .NET Core 2.0, and is using the `AP
 
 To be able to local test the AWS Lambda implementation, the project uses [SAM Local](https://github.com/awslabs/aws-sam-cli) to bootstrap all the necessary components to test it. The SAM Local is instrumented using the `template.yml` located at `./build` folder.
 
-Given the 3rd party API doesn't provide a sandbox mode for the acceptance tests, it was created a Testing API where it is possible to replicate the behavior of the real API. The SAM Local uses Docker containers, therefore the Testing API is implemented using the same technology.
+Given the 3rd party API doesn't provide a sandbox mode for the acceptance tests, a Testing API was created where it is possible to replicate the behavior of the real API. SAM Local uses Docker containers, therefore the Testing API is implemented using the same technology.
 
 The Acceptance Tests are based on the expected behavior of the API (BDD FTW), where it uses a `Given/When/Then` declarative instructions to specify the steps for the tests.
 
