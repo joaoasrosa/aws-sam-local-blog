@@ -1,5 +1,5 @@
-Import-Module -Name NetNat
-Get-NetNat | Remove-NetNat -Confirm:$false # https://github.com/docker/for-win/issues/598
+Import-Module -Name NetNat -Verbose
+Get-NetNat | Remove-NetNat -Confirm:$false -Verbose # https://github.com/docker/for-win/issues/598
 
 netstat -ano | findstr "8000" | Select-String -Pattern "\d+$" -AllMatches |  % {$_.Matches } | foreach { tasklist |select-string -Pattern $_.Value } | Get-Unique
 
