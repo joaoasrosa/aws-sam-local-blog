@@ -4,6 +4,14 @@ init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   - ps: .\build\clean_container_network.ps1 -Cleanup -ForceDeleteAllSwitches
+  - ps: Restart-Computer -Force            # here the server goes restarting
+  - echo Before sleep
+  - ps: |
+      Write-Host $env:TEST_VAR
+      Write-Host ([datetime]::Now)
+      Start-Sleep -s 10
+      Write-Host "After sleep"
+      Write-Host ([datetime]::Now)
   - ps: .\build\configure_appveyor_agent.ps1
 build_script:
   - ps: .\build.ps1 --target=AppVeyor
