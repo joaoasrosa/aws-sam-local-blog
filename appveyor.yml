@@ -1,7 +1,11 @@
 version: '{build}'
 image: Visual Studio 2017
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   - ps: .\build\configure_appveyor_agent.ps1
 build_script:
   - ps: .\build.ps1 --target=AppVeyor
 test: off
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
