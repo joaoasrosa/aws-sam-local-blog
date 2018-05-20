@@ -4,4 +4,4 @@ Get-NetNat | Remove-NetNat -Confirm:$false -Verbose # https://github.com/docker/
 python -m pip install --upgrade pip
 pip install requests[security]
 $env:PATH += ";C:\Users\appveyor\AppData\Roaming\Python\Scripts"
-pip install --user aws-sam-cli
+pip install aws-sam-cli
